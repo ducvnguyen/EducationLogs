@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name = "regression_EduLogs">
+	<test name = "Education Logs">
+		<classes>
+			<class name = "test.TC01" />
+		</classes>
+	</test>
+</suite>

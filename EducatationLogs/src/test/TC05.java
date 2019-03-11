@@ -1,0 +1,55 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+
+public class TC05 {
+	public WebDriver driver;
+	public LogInPage logInPage = new LogInPage();
+  @Test
+  public void f() {
+	  Boolean lnk_home = driver.findElements(By.xpath("//a[@class='navbar-brand']")).size() > 0;
+	  Boolean lnk_admin = driver.findElements(By.id("basic-nav-dropdown")).size() > 0;
+	  Boolean btn_filters = driver.findElements(By.xpath("//button[@class='btn btn-filter module_grid__btn_filter btn btn-default']")).size() > 0;
+	  Boolean drp_noofrecords = driver.findElements(By.xpath("//div[@class='dropup btn-group']")).size() > 0;
+	  Boolean lnk_pagination = driver.findElements(By.xpath("//ul[@class='pagination']")).size() > 0;
+	  Boolean tbl_data = driver.findElements(By.xpath("//div[@class='main-module_tableview']")).size() > 0;
+	  
+	  // Verify all elements of Home page display	  
+	  Assert.assertTrue(lnk_home);
+	  Assert.assertTrue(lnk_admin);
+	  Assert.assertTrue(btn_filters);
+	  Assert.assertTrue(drp_noofrecords);
+	  Assert.assertTrue(lnk_pagination);
+	  Assert.assertTrue(tbl_data);
+	  
+  }
+  @BeforeMethod
+  public void beforeMethod() {
+	  System.setProperty("webdriver.gecko.driver", logInPage.geckoPath);
+	  driver = new FirefoxDriver();
+	  driver.get(logInPage.siteUrl);
+	  WebElement txt_email = driver.findElement(By.name("email"));
+	  txt_email.sendKeys(logInPage.userName);
+	  WebElement txt_password = driver.findElement(By.name("password"));
+	  txt_password.sendKeys(logInPage.password);
+	  WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+	  btn_signin.click();
+	  WebDriverWait wait = new WebDriverWait(driver, 10);
+	  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='main-module_tableview']")));
+  }
+
+  @AfterMethod
+  public void afterMethod() {
+	  driver.quit();
+  }
+
+}

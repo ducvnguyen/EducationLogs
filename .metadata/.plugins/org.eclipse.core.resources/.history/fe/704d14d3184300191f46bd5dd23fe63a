@@ -1,0 +1,68 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+
+public class TC08 {
+	public WebDriver driver;
+	public LogInPage logInPage = new LogInPage();
+  @Test
+  public void f() {
+	  WebDriverWait wait = new WebDriverWait(driver, 10);
+	  WebElement drp_no_records = driver.findElement(By.id("dropdown-basic-Default"));
+	  Integer txt_no_default = Integer.valueOf(drp_no_records.getText());
+	  drp_no_records.click();
+	  // Wait for all options display	  
+	  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("(//div[@class='open dropup btn-group'])/ul/li")));
+	  List<WebElement> options = driver.findElements(By.xpath("(//div[@class='open dropup btn-group'])/ul/li/a"));
+	  int i = 0;
+	  Boolean break_condition = true;
+	  Integer option_selected = null;
+	  do {
+		  Integer temp_value = Integer.valueOf(options.get(i).getText());
+		  if(temp_value != txt_no_default) {
+			  break_condition = false;
+			  option_selected = temp_value;
+		  }
+		  i++;
+	  } while(break_condition && i < options.size());
+	  options.get(i).click();
+	  System.out.println("option select: " + option_selected);
+	  // Verify the number of records should be less than selected value and greater than the default value  	  
+	  List<WebElement> arr_records = driver.findElements(By.xpath("//table/tbody/tr"));
+	  Boolean expected = arr_records.size() < option_selected && txt_no_default < arr_records.size();
+	  Assert.assertTrue(expected);
+  }
+  @BeforeMethod
+  public void beforeMethod() {
+	  System.setProperty("webdriver.gecko.driver", logInPage.geckoPath);
+	  driver = new FirefoxDriver();
+	  driver.get(logInPage.siteUrl);
+	  WebElement txt_email = driver.findElement(By.name("email"));
+	  txt_email.sendKeys(logInPage.userName);
+	  WebElement txt_password = driver.findElement(By.name("password"));
+	  txt_password.sendKeys(logInPage.password);
+	  WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+	  btn_signin.click();
+	  WebDriverWait wait = new WebDriverWait(driver, 10);
+	  wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//table/tbody/tr")));
+  }
+
+  @AfterMethod
+  public void afterMethod() {
+	  driver.quit();
+  }
+
+}

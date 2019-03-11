@@ -1,0 +1,14 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.AfterClass;
+
+public class TC01 {
+  @Test
+  public void f() {
+  }
+  @AfterClass
+  public void afterClass() {
+  }
+
+}

@@ -1,0 +1,55 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.support.ui.ExpectedConditions;
+//import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+
+public class TC05 {
+	public WebDriver driver;
+  @Test
+  public void f() {
+	  Boolean lnk_home = driver.findElements(By.xpath("//a[@class='navbar-brand']")).size() > 0;
+	  Boolean lnk_admin = driver.findElements(By.id("basic-nav-dropdown")).size() > 0;
+	  Boolean btn_filters = driver.findElements(By.xpath("//buton[@class='btn btn-filter module_grid__btn_filter btn btn-default']")).size() > 0;
+	  Boolean drp_noofrecords = driver.findElements(By.xpath("//div[@class='dropup btn-group']")).size() > 0;
+	  Boolean lnk_pagination = driver.findElements(By.xpath("//div[@class='pagination']")).size() > 0;
+	  Boolean tbl_data = driver.findElements(By.xpath("//div[@class='main-module_tableview']")).size() > 0;
+	  
+	  
+	  Assert.assertTrue(lnk_home);
+	  Assert.assertTrue(lnk_admin);
+	  Assert.assertTrue(btn_filters);
+	  Assert.assertTrue(drp_noofrecords);
+	  Assert.assertTrue(lnk_pagination);
+	  Assert.assertTrue(tbl_data);
+	  
+  }
+  @BeforeMethod
+  public void beforeMethod() throws InterruptedException {
+	  System.setProperty("webdriver.gecko.driver", "C:\\Users\\ducvnguyen\\Downloads\\geckodriver-v0.24.0-win64\\geckodriver.exe");
+	  driver = new FirefoxDriver();
+	  driver.get("http://ktvn-test.s3-website.us-east-1.amazonaws.com/signin");
+	  WebElement txt_email = driver.findElement(By.name("email"));
+	  txt_email.sendKeys("admin@test.com");
+	  WebElement txt_password = driver.findElement(By.name("password"));
+	  txt_password.sendKeys("test123");
+	  WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+	  btn_signin.click();
+	  Thread.sleep(5000);
+//	  WebDriverWait wait = new WebDriverWait(driver, 10);
+//	  wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='main-module_tableview']")));
+  }
+
+  @AfterMethod
+  public void afterMethod() {
+	  driver.quit();
+  }
+
+}

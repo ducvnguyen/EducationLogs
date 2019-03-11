@@ -1,0 +1,48 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+
+public class TC12 {
+	WebDriver driver;
+	public LogInPage logInPage = new LogInPage();
+  @Test
+  public void f() {
+	  WebElement btn_filters = driver.findElement(By.xpath("//button[@class='btn btn-filter module_grid__btn_filter btn btn-default']")); 
+	  btn_filters.click();
+	  WebElement btn_cancel = driver.findElement(By.xpath("//button[@class='btn btn-default']"));
+	  btn_cancel.click();
+	  Boolean modal_present = driver.findElements(By.xpath("modal-content")).size() > 0;
+	  Boolean isPresent = driver.findElements(By.xpath("//div/a[@class='query__filter__item']")).size() > 0;
+	  Assert.assertFalse(modal_present);
+	  Assert.assertFalse(isPresent);
+  }
+  @BeforeMethod
+  public void beforeMethod() {
+	  System.setProperty("webdriver.gecko.driver", logInPage.geckoPath);
+	  driver = new FirefoxDriver();
+	  driver.get(logInPage.siteUrl);
+	  WebElement txt_email = driver.findElement(By.name("email"));
+	  txt_email.sendKeys(logInPage.userName);
+	  WebElement txt_password = driver.findElement(By.name("password"));
+	  txt_password.sendKeys(logInPage.password);
+	  WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+	  btn_signin.click();
+	  WebDriverWait wait = new WebDriverWait(driver, 10);
+	  wait.until(ExpectedConditions.presenceOfElementLocated(By.id("basic-nav-dropdown")));
+  }
+
+  @AfterMethod
+  public void afterMethod() {
+	  driver.quit();
+  }
+
+}

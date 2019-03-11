@@ -1,0 +1,55 @@
+package test;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+
+public class TC08 {
+	public WebDriver driver;
+  @Test
+  public void f() {
+	  WebElement drp_no_records = driver.findElement(By.id("dropdown-basic-Default"));
+	  String txt_no_default = drp_no_records.getText();
+	  drp_no_records.click();
+	  List<WebElement> options = driver.findElements(By.xpath("//ul/li"));
+	  int i = 0;
+	  Boolean break_condition = true;
+	  do {
+		  if(options.get(i).getText() != txt_no_default) {
+			  break_condition = false;
+		  }
+		  i++;
+	  } while(break_condition && i < options.size());
+	  options.get(i).click();
+	  WebElement tbl_main = driver.findElement(By.xpath(""));
+  }
+  @BeforeMethod
+  public void beforeMethod() {
+	  System.setProperty("webdriver.gecko.driver", "C:\\Users\\ducvnguyen\\Downloads\\geckodriver-v0.24.0-win64\\geckodriver.exe");
+	  driver = new FirefoxDriver();
+	  driver.get("http://ktvn-test.s3-website.us-east-1.amazonaws.com/signin");
+	  WebElement txt_email = driver.findElement(By.name("email"));
+	  txt_email.sendKeys("admin@test.com");
+	  WebElement txt_password = driver.findElement(By.name("password"));
+	  txt_password.sendKeys("test123");
+	  WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+	  btn_signin.click();
+	  WebDriverWait wait = new WebDriverWait(driver, 5);
+	  wait.until(ExpectedConditions.presenceOfElementLocated(By.id("basic-nav-dropdown")));
+  }
+
+  @AfterMethod
+  public void afterMethod() {
+	  driver.quit();
+  }
+
+}

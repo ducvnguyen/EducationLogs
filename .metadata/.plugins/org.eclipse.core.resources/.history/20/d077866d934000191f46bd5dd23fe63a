@@ -1,0 +1,11 @@
+&lt;suite name="regression_EduLogs" &gt;
+ 
+&lt;test name="Edulogs" &gt;
+ 
+&lt;classes&gt; &lt;class name="test.TC01" /&gt;
+ 
+&lt;/classes&gt;
+ 
+&lt;/test&gt;
+ 
+&lt;/suite&gt;

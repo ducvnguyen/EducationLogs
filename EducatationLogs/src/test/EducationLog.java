@@ -1,0 +1,25 @@
+package test;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class EducationLog {
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.gecko.driver", "C:\\Users\\ducvnguyen\\Downloads\\geckodriver-v0.24.0-win64\\geckodriver.exe");
+		
+		WebDriver driver = new FirefoxDriver();
+		driver.get("http://ktvn-test.s3-website.us-east-1.amazonaws.com/signin");
+		
+		WebElement txt_email = driver.findElement(By.name("email"));
+		txt_email.sendKeys("admin@test.com");
+		WebElement txt_password = driver.findElement(By.name("password"));
+		txt_password.sendKeys("test123");
+		WebElement btn_signin = driver.findElement(By.xpath("//a[@class='col-login__btn']"));
+		btn_signin.click();
+		Thread.sleep(2000);
+		driver.quit();
+		
+	}
+}
